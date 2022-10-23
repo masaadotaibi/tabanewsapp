@@ -22,9 +22,9 @@ public class ArticleService {
      * @return List of all articles => List<Article>
      */
     public List<Article> findAll() {
-        // TODO: find out how to use pagination as below line will just show 10 items only, rather than paging
-        return articleRepository.findAll(Pageable.ofSize(10)).get().toList();
-//        return articleRepository.findAll();
+        // TODO: find out how to use pagination as below commented line will just show 10 items only, rather than paging
+//        return articleRepository.findAll(Pageable.ofSize(10)).get().toList();
+        return articleRepository.findAll();
     }
 
     /**
@@ -47,11 +47,14 @@ public class ArticleService {
      * @return Confirmation message of article deletion
      */
     public String deleteArticleOfId(Long id) {
-        articleRepository.deleteById(id);
+        try {
+            articleRepository.deleteById(id);
+            return "Article of id=" + id + " is deleted";
+        } catch(Exception ex) {
+            throw new NotFoundException("Article of id=" + id + " is not found. Hence, not deleted");
+        }
 
-        // TODO: handle the exception of the article of passed id not present in db
 
-        return "Article of id=" + id + " is deleted";
     }
 
     /**

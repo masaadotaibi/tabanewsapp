@@ -48,7 +48,7 @@ public class Article {
     // TODO: make 'enabled' > boolean field representing if either this article is enabled or disabled by admin
 
 
-    public Article(Long id, String title, String body, LocalDateTime createdAt) {
+    public Article(Long id, String title, String body) {
         this.id = id;
         this.title = title;
         this.body = body;
