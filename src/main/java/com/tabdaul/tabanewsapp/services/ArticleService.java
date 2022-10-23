@@ -4,6 +4,7 @@ import com.tabdaul.tabanewsapp.Entities.Article;
 import com.tabdaul.tabanewsapp.repositories.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,9 @@ public class ArticleService {
      * @return List of all articles => List<Article>
      */
     public List<Article> findAll() {
-        return articleRepository.findAll();
+        // TODO: find out how to use pagination as below line will just show 10 items only, rather than paging
+        return articleRepository.findAll(Pageable.ofSize(10)).get().toList();
+//        return articleRepository.findAll();
     }
 
     /**

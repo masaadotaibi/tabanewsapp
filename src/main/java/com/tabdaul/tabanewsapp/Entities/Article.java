@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
@@ -26,8 +28,18 @@ public class Article {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @NotNull(message = "Article title is required.")
+    @Size(min = 1, max = 100, message = "Article title must be at least 1 character and up to 100 characters")
+    @Column(nullable = false, length = 100)
     private String title;
+
+    @NotNull(message = "Article body is required.")
+    @Size(min = 1, max = 500, message = "Article body must be at least 1 character and up to 500 characters")
+    @Column(nullable = false, length = 500)
     private String body;
+
+    @NotNull
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     // TODO: make 'Author' > field as a foreign key (the logged in username)

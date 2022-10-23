@@ -5,6 +5,7 @@ import com.tabdaul.tabanewsapp.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,7 @@ public class ArticleController {
     }
 
     @PostMapping({"", "/"})
-    public Article addNewArticle(@RequestBody Article newArticle) {
+    public Article addNewArticle(@Valid @RequestBody Article newArticle) {
         return articleService.addNewArticle(newArticle);
     }
 
