@@ -30,17 +30,13 @@ public class ArticleController {
 
     @PostMapping({"", "/"})
     public Article addNewArticle(@RequestBody Article newArticle) {
-        if(articleService.addNewArticle(newArticle)) {
-            return newArticle;
-        }
-
-        return null;
+        return articleService.addNewArticle(newArticle);
     }
 
     @DeleteMapping("/{id}")
-    public Article deleteArticle(@PathVariable Long id) {
-        Article deletedArticle = articleService.deleteArticleOfId(id);
+    public String deleteArticle(@PathVariable Long id) {
+        String deletionMessage = articleService.deleteArticleOfId(id);
 
-        return deletedArticle;
+        return deletionMessage;
     }
 }

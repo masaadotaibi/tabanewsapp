@@ -1,40 +1,61 @@
 package com.tabdaul.tabanewsapp.services;
 
 import com.tabdaul.tabanewsapp.Entities.Article;
+import com.tabdaul.tabanewsapp.repositories.ArticleRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class ArticleService {
 
-    private List<Article> articlesList = new ArrayList<Article>(Arrays.asList(
-        new Article(1L, "First article", "This article will..."),
-        new Article(2L, "Second article", "This article puts the light..."),
-        new Article(3L, "Third article", "In This article we will..."),
-        new Article(4L, "Fourth article", "Before beginning..."),
-        new Article(5L, "Fifth article", "Continuing from our previous article, we...")
-    ));
+    @Autowired
+    private ArticleRepository articleRepository;
 
+    /**
+     * Get all articles
+     * @return List of all articles => List<Article>
+     */
     public List<Article> findAll() {
-        return articlesList;
+        return articleRepository.findAll();
     }
 
+    /**
+     * Get the Article of passed id parameter
+     * @param id represents the ID of the article we wish to fetch from DB
+     * @return The Article of passed ID
+     */
     public Article getArticleById(Long id) {
-        Article articleOfId = articlesList.stream().filter(article -> article.getId().equals(id)).findFirst().get();
+        Article articleOfId = articleRepository.findById(id).get();
+
+        // TODO: handle the exception of the article of passed id not being found
 
         return articleOfId;
     }
 
-    public Article deleteArticleOfId(Long id) {
-        Article articleDeleted = articlesList.remove(articlesList.indexOf(getArticleById(id)));
+    /**
+     * Delete the Article of passed id parameter
+     * @param id represents the ID of the article we wish to delete
+     * @return Confirmation message of article deletion
+     */
+    public String deleteArticleOfId(Long id) {
+        articleRepository.deleteById(id);
 
-        return articleDeleted;
+        // TODO: handle the exception of the article of passed id not present in db
+
+        return "Article of id=" + id + " is deleted";
     }
 
-    public boolean addNewArticle(Article newArticle) {
-        return articlesList.add(newArticle);
+    /**
+     * Adds the passed article to the DB
+     * @param newArticle represents the newly created article
+     * @return The newly created article to the caller of the method
+     */
+    public Article addNewArticle(Article newArticle) {
+        Article newAddedArticle = articleRepository.save(newArticle);
+
+        return newAddedArticle;
     }
 }
