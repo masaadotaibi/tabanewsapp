@@ -1,13 +1,15 @@
 package com.tabdaul.tabanewsapp.services;
 
 import com.tabdaul.tabanewsapp.Entities.Article;
+import com.tabdaul.tabanewsapp.error.MissingFieldException;
+import com.tabdaul.tabanewsapp.error.NotFoundException;
 import com.tabdaul.tabanewsapp.repositories.ArticleRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class ArticleService {
@@ -31,11 +33,12 @@ public class ArticleService {
      * @return The Article of passed ID
      */
     public Article getArticleById(Long id) {
-        Article articleOfId = articleRepository.findById(id).get();
-
-        // TODO: handle the exception of the article of passed id not being found
-
-        return articleOfId;
+        try {
+            Article articleOfId = articleRepository.findById(id).get();
+            return articleOfId;
+        } catch (NoSuchElementException ex) {
+            throw new NotFoundException(String.format("No Article with the id [%d] was found in the database.", id));
+        }
     }
 
     /**
@@ -52,13 +55,18 @@ public class ArticleService {
     }
 
     /**
-     * Adds the passed article to the DB
+     * Add the passed article to the DB
      * @param newArticle represents the newly created article
      * @return The newly created article to the caller of the method
      */
     public Article addNewArticle(Article newArticle) {
-        Article newAddedArticle = articleRepository.save(newArticle);
+        try {
 
-        return newAddedArticle;
+            Article newAddedArticle = articleRepository.save(newArticle);
+            return newAddedArticle;
+
+        } catch(MissingFieldException ex) {
+            throw new MissingFieldException(ex.getMessage());
+        }
     }
 }
