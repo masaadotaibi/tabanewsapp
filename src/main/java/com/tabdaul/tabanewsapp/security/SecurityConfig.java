@@ -26,6 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .anyRequest().authenticated()
                     .and()
                 .httpBasic(); // For our request to be authenticated, we need to call this method
+
+            http.headers().frameOptions().disable();
         ;
     }
 }

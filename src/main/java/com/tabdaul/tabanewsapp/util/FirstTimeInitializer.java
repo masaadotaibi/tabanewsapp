@@ -20,14 +20,14 @@ public class FirstTimeInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         // TODO: Make the administrator by default in this method
-        // Check if we have users registered
         if (userService.findAll().isEmpty()) {
             logger.info("No user accounts found. Creating some users...");
+
+            User user = new User("Mosaed", "masaadbal@gmail.com", "pass123");
+            userService.save(user);
         }
 
         // If no users exist, create some users.
-        User user = new User("Mosaed", "masaadbal@gmail.com", "pass123");
-        userService.save(user);
 
     }
 }

@@ -37,11 +37,13 @@ public class User implements UserDetails {
     private String email;
 
     @NotEmpty
-    @JsonIgnore
+    @JsonIgnore // FOR FUTURE YOU: this is used to remark that this field won't be constructed in JSON response
     private String password;
 
-    public User() {
-    }
+    private Boolean locked = false;
+    private Boolean enabled = true;
+
+    public User() {}
 
     public User(@NotEmpty String username, @NotEmpty String email, @NotEmpty String password) {
         this.username = username;
@@ -56,12 +58,12 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     @Override
@@ -71,7 +73,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !locked;
     }
 
     @Override
@@ -81,6 +83,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
+
 }
