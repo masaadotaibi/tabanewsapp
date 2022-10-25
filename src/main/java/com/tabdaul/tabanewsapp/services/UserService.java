@@ -1,10 +1,11 @@
 package com.tabdaul.tabanewsapp.services;
 
+import com.tabdaul.tabanewsapp.Entities.User;
+import com.tabdaul.tabanewsapp.error.NotFoundException;
 import com.tabdaul.tabanewsapp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,15 +28,21 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new User("Mosaed",  passwordEncoder().encode("password"), AuthorityUtils.NO_AUTHORITIES);
+//        return new User("Mosaed",  passwordEncoder().encode("password"), AuthorityUtils.NO_AUTHORITIES);
+        User user = userRepository.findByEmail(username);
+        if(user == null) {
+            throw new NotFoundException("");
+        }
+
+        return user;
     }
 
-    public void save(com.tabdaul.tabanewsapp.Entities.User user) {
+    public void save(User user) {
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         this.userRepository.save(user);
     }
 
-    public List<com.tabdaul.tabanewsapp.Entities.User> findAll() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 }

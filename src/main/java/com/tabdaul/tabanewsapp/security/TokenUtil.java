@@ -1,6 +1,8 @@
 package com.tabdaul.tabanewsapp.security;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +16,13 @@ public class TokenUtil {
     private final String CLAIMS_SUBJECT = "sub";
     private final String CLAIMS_CREATED = "created";
 
-    private Long value = 604800L;
+    @Value("${auth.expiration}")
+    private Long TOKEN_VALIDITY = 604800L;
 
-    private String generateToken(UserDetails userDetails) {
+    @Value("${auth.secret}")
+    private String TOKEN_SECRET;
+
+    public String generateToken(UserDetails userDetails) {
 
         // to generate the token, pass:
             // claims
@@ -30,12 +36,11 @@ public class TokenUtil {
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate())
-                .signWith(null)
+                .signWith(SignatureAlgorithm.HS256, TOKEN_SECRET)
                 .compact();
     }
 
     private Date generateExpirationDate() {
-
-        return null;
+        return new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000);
     }
 }
