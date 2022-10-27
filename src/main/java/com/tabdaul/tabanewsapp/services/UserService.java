@@ -29,9 +29,9 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        return new User("Mosaed",  passwordEncoder().encode("password"), AuthorityUtils.NO_AUTHORITIES);
-        User user = userRepository.findByEmail(username);
+        User user = userRepository.findByUsername(username);
         if(user == null) {
-            throw new NotFoundException("");
+            throw new NotFoundException("User not found");
         }
 
         return user;

@@ -7,19 +7,24 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final String[] PUBLIC_ENDPOINTS = {
-            "/article",
-            "/article/*"
+            "/login"
     };
 
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public AuthFilter authFilter() {
+        return new AuthFilter();
     }
 
     @Override
@@ -30,10 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // this to indicate that the session is stateless (it is REST, and we are going to use JWT)
                     .and()
                 .authorizeRequests() // to indicate what paths will need authorization
-                    .antMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
+                    .antMatchers(PUBLIC_ENDPOINTS).permitAll()
                     .anyRequest().authenticated()
                     .and()
-                .httpBasic(); // For our request to be authenticated, we need to call this method
+                .addFilterBefore(authFilter(), UsernamePasswordAuthenticationFilter.class);
 
             http.headers().frameOptions().disable();
         ;
