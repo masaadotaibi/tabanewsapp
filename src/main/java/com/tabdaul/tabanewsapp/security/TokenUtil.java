@@ -70,7 +70,7 @@ public class TokenUtil {
         Claims claims;
         try {
             claims = Jwts.parser().setSigningKey(TOKEN_SECRET)
-                    .parseClaimsJwt(token)
+                    .parseClaimsJws(token)
                     .getBody();
         } catch (Exception ex) {
             claims = null;

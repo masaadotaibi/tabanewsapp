@@ -13,7 +13,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final String[] PUBLIC_ENDPOINTS = {
-            "/login"
+            "/login",
+            "//h2-console",
+            "/h2-console/*",
     };
 
     @Bean

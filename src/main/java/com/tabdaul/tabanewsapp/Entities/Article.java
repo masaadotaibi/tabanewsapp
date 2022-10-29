@@ -9,6 +9,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -43,6 +45,13 @@ public class Article {
     private LocalDateTime createdAt;
 
     // TODO: make 'Author' > field as a foreign key (the logged in username)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "author_id")
+    private User author;
+
+    @OneToMany(mappedBy = "article", orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();
+
     // TODO: make 'NumberOfLikes' > List of Likes field representing how many likes this article received
     // TODO: make 'NumberOfLikes' > List of Dislikes field representing how many dislikes this article received
     // TODO: make 'enabled' > boolean field representing if either this article is enabled or disabled by admin
