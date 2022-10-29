@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 /**
  * @author MOSAED ALOTAIBI (MASAAD)
@@ -34,7 +34,7 @@ public class Comment {
     private Long id;
 
 
-    @NotEmpty
+    @NotBlank
     @Column(nullable = false)
     private String content;
 

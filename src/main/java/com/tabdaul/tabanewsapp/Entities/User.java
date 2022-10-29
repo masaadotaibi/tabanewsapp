@@ -53,6 +53,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author", orphanRemoval = true)
     private Set<Article> articles = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private Set<UserPrivileges> privileges;
+
     private Boolean locked = false;
     private Boolean enabled = true;
 
