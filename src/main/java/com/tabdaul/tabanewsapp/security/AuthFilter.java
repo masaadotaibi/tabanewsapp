@@ -1,6 +1,6 @@
 package com.tabdaul.tabanewsapp.security;
 
-import com.tabdaul.tabanewsapp.services.UserService;
+import com.tabdaul.tabanewsapp.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +29,7 @@ public class AuthFilter extends OncePerRequestFilter {
     private TokenUtil tokenUtil;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -52,7 +52,7 @@ public class AuthFilter extends OncePerRequestFilter {
             String username = tokenUtil.getUsernameFromToken(token);
 
             if(username != null) {
-                UserDetails userDetails = userService.loadUserByUsername(username);
+                UserDetails userDetails = userServiceImpl.loadUserByUsername(username);
 
                 if(tokenUtil.isTokenValid(token, userDetails)) {
                     UsernamePasswordAuthenticationToken authentication =

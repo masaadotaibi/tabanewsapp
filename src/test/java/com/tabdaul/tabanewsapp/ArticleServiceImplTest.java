@@ -2,7 +2,7 @@ package com.tabdaul.tabanewsapp;
 
 import com.tabdaul.tabanewsapp.Entities.Article;
 import com.tabdaul.tabanewsapp.repositories.ArticleRepository;
-import com.tabdaul.tabanewsapp.services.ArticleService;
+import com.tabdaul.tabanewsapp.services.ArticleServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +19,19 @@ import static org.mockito.BDDMockito.*;
 import static org.assertj.core.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
-public class ArticleServiceTest {
+public class ArticleServiceImplTest {
 
     @MockBean
     private ArticleRepository articleRepository;
 
     @Autowired
-    private ArticleService articleService;
+    private ArticleServiceImpl articleServiceImpl;
 
     @TestConfiguration
     static class ArticleServiceContextConfiguration {
         @Bean
-        public ArticleService articleService() {
-            return new ArticleService();
+        public ArticleServiceImpl articleService() {
+            return new ArticleServiceImpl();
         }
     }
 
@@ -39,13 +39,13 @@ public class ArticleServiceTest {
     public void findAllTest() {
 
         // Arrange
-        Article article1 = new Article(1L, "Article 1", "Body 1");
-        Article article2 = new Article(2L, "Article 2", "Body 2");
+        Article article1 = new Article(1L, "Article 1", "Body 1", null);
+        Article article2 = new Article(2L, "Article 2", "Body 2", null);
         List<Article> data = Arrays.asList(article1, article2);
 
         // Act
         given(articleRepository.findAll()).willReturn(data);
-        List<Article> result = articleService.findAll();
+        List<Article> result = articleServiceImpl.findAll();
 
         // Assert
         assertThat(result).hasSize(2).contains(article1, article2);
@@ -55,11 +55,11 @@ public class ArticleServiceTest {
     public void getArticleById() {
 
         // Arrange
-        Article article = new Article(1L, "Article 1", "Body 1");
+        Article article = new Article(1L, "Article 1", "Body 1", null);
 
         // Act
         given(articleRepository.findById(anyLong())).willReturn(Optional.ofNullable(article));
-        Article result = articleService.getArticleById(1L);
+        Article result = articleServiceImpl.getArticleById(1L);
 
         // Assert
         assertThat(result.getTitle()).containsIgnoringCase("article");

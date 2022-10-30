@@ -3,7 +3,7 @@ package com.tabdaul.tabanewsapp.Controllers;
 import com.tabdaul.tabanewsapp.security.JwtResponse;
 import com.tabdaul.tabanewsapp.security.LoginRequest;
 import com.tabdaul.tabanewsapp.security.TokenUtil;
-import com.tabdaul.tabanewsapp.services.UserService;
+import com.tabdaul.tabanewsapp.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,7 +26,7 @@ public class AuthController {
     private TokenUtil tokenUtil;
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -39,7 +39,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserDetails userDetails = userService.loadUserByUsername(loginRequest.getUsername());
+        UserDetails userDetails = userServiceImpl.loadUserByUsername(loginRequest.getUsername());
 
         String token = tokenUtil.generateToken(userDetails);
 
